@@ -7,6 +7,6 @@ addons:
     update: true
 
 install:
-  - cabal install alex Agda
+  - cabal install alex happy Agda
 script:
   - agda all.agda
