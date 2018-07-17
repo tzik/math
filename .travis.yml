@@ -1,9 +1,12 @@
 language: haskell
 
-before_install:
-  - sudo apt-get install -y agda agda-stdlib
+# before_install:
+#   - sudo apt-get install -y agda
 addons:
   apt:
     update: true
+
+install:
+  - cabal install Agda
 script:
-  - agda -i . -i /usr/share/agda-stdlib all.agda
+  - agda all.agda
