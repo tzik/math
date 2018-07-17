@@ -5,4 +5,4 @@ addons:
   apt:
     update: true
 script:
-  - agda all.agda
+  - agda -i /usr/share/agda-stdlib all.agda
