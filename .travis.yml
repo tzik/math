@@ -4,3 +4,5 @@ before_install:
 addons:
   apt:
     update: true
+script:
+  - agda all.agda
