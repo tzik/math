@@ -1,12 +1,10 @@
 language: haskell
 
-# before_install:
-#   - sudo apt-get install -y agda
 addons:
   apt:
     update: true
 
 install:
-  - cabal install alex happy Agda
+  - cabal install alex happy cpphs Agda
 script:
   - agda all.agda
