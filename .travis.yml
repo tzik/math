@@ -2,4 +2,4 @@ services:
   - docker
 script:
   - docker pull tzik/math
-  - docker run --rm -v "${PWD}/src:/home/tester/src" -u tester -w /home/tester/src tzik/math agda -i /usr/share/agda-stdlib all.agda
+  - docker run --rm -v "${PWD}/src:/tmp/src" -u "$(id -u "${USER}")" -w /tmp/src tzik/math agda -i /usr/share/agda-stdlib all.agda
