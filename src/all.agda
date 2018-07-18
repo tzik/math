@@ -2,4 +2,4 @@
 module all where
 
 import test
-import algebra.groups
+import algebra.Subgroup
