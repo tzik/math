@@ -6,7 +6,8 @@ open import Relation.Binary using (IsEquivalence; Setoid)
 open import Algebra using (Group)
 open import Algebra.Structures using (IsGroup)
 
-module algebra.Subgroup {c l} (G : Group c l) where
+module algebra.Subgroup {a c l}
+  (G : Group c l) (p : Group.Carrier G → Set a) where
 
 open Group G hiding (isGroup)
 open IsGroup (Group.isGroup G) renaming (
@@ -19,18 +20,18 @@ open IsGroup (Group.isGroup G) renaming (
   sym to G-sym;
   trans to G-trans)
 
-∙-consistent : {a : Level} (p : Carrier → Set a) → Set (a ⊔ c)
-∙-consistent p = ∀ {x y} → p x → p y → p (x ∙ y)
+∙-Consistent : Set (a ⊔ c)
+∙-Consistent = ∀ {x y} → p x → p y → p (x ∙ y)
 
-⁻¹-consistent : {a : Level} (p : Carrier → Set a) → Set (a ⊔ c)
-⁻¹-consistent p = ∀ {x} → p x → p (x ⁻¹)
+⁻¹-Consistent :  Set (a ⊔ c)
+⁻¹-Consistent  = ∀ {x} → p x → p (x ⁻¹)
 
--- Note: ∙-consistent and ⁻¹-consistent imply ε-consistent, unless Carrier is empty.
-ε-consistent : {a : Level} (p : Carrier → Set a) → Set a
-ε-consistent p = p ε
+-- Note: ∙-Consistent and ⁻¹-Consistent imply ε-Consistent, unless Carrier is empty.
+ε-Consistent : Set a
+ε-Consistent = p ε
 
-Subgroup : {a : Level} {p : Carrier → Set a} → ∙-consistent p → ⁻¹-consistent p → ε-consistent p → Group (a ⊔ c) l
-Subgroup {a} {p} prod inv id = record {
+Subgroup : ∙-Consistent → ⁻¹-Consistent  → ε-Consistent  → Group (a ⊔ c) l
+Subgroup prod inv id = record {
     Carrier = Σ Carrier p;
     _≈_ = _≈_ on proj₁;
     _∙_ = λ x y → (_∙_ on proj₁) x y , prod (proj₂ x) (proj₂ y);
