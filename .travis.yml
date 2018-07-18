@@ -1,10 +1,5 @@
-language: haskell
-
-addons:
-  apt:
-    update: true
-
-install:
-  - cabal install alex happy cpphs Agda
+services:
+  - docker
 script:
-  - agda all.agda
+  - docker pull tzik/math
+  - docker run --rm -v "${PWD}/src:src" -u tester -w /home/tester/src tzik/math agda -i /usr/share/agda-stdlib all.agda
