@@ -1,5 +1,6 @@
 
 module all where
 
-import algebra.Subgroup
 import algebra.Homomorphism
+import algebra.Quotient
+import algebra.Subgroup

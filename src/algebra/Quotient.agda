@@ -5,7 +5,7 @@ open import Algebra using (Group)
 open import Relation.Binary using (Rel; IsEquivalence; _⇒_)
 open import Algebra.Structures using (IsGroup)
 
-module Quotient {a b c}
+module algebra.Quotient {a b c}
   (G : Group a b)
   (_∼_ :  Rel (Group.Carrier G) c)
   (isEquivalence : IsEquivalence _∼_) where
