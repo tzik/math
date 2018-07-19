@@ -18,25 +18,25 @@ module Group-Lemma {a' b'} (G : Group a'  b') where
   cancelˡ : {x y : Carrier} → (z : Carrier) → z ∙ x ≈ z ∙ y → x ≈ y
   cancelˡ {x} {y} z z∙x≈z∙y =
     begin⟨ Group.setoid G ⟩
-      x ≈⟨ sym (identityˡ x) ⟩
-      ε ∙ x ≈⟨ ∙-cong (sym (inverseˡ z)) refl ⟩
+      x ≈⟨ sym (proj₁ identity x) ⟩
+      ε ∙ x ≈⟨ ∙-cong (sym (proj₁ inverse z)) refl ⟩
       z ⁻¹ ∙ z ∙ x ≈⟨ assoc (z ⁻¹) z x ⟩
       z ⁻¹ ∙ (z ∙ x) ≈⟨ ∙-cong refl z∙x≈z∙y ⟩
       z ⁻¹ ∙ (z ∙ y) ≈⟨ sym (assoc (z ⁻¹) z y) ⟩
-      z ⁻¹ ∙ z ∙ y ≈⟨ ∙-cong (inverseˡ z) refl ⟩
-      ε ∙ y ≈⟨ identityˡ y ⟩
+      z ⁻¹ ∙ z ∙ y ≈⟨ ∙-cong (proj₁ inverse z) refl ⟩
+      ε ∙ y ≈⟨ proj₁ identity y ⟩
       y ∎
 
   cancelʳ : {x y : Carrier} → (z : Carrier) → x ∙ z ≈ y ∙ z → x ≈ y
   cancelʳ {x} {y} z x∙z≈y∙z =
-    begin⟨ setoid ⟩
-      x ≈⟨ sym (identityʳ x) ⟩
-      x ∙ ε ≈⟨ ∙-cong refl (sym (inverseʳ z)) ⟩
+    begin⟨ Group.setoid G ⟩
+      x ≈⟨ sym (proj₂ identity x) ⟩
+      x ∙ ε ≈⟨ ∙-cong refl (sym (proj₂ inverse z)) ⟩
       x ∙ (z ∙ z ⁻¹)  ≈⟨ sym (assoc x z (z ⁻¹)) ⟩
       x ∙ z ∙ z ⁻¹  ≈⟨ ∙-cong x∙z≈y∙z refl ⟩
       y ∙ z ∙ z ⁻¹  ≈⟨ assoc y z (z ⁻¹) ⟩
-      y ∙ (z ∙ z ⁻¹)  ≈⟨ ∙-cong refl (inverseʳ z) ⟩
-      y ∙ ε ≈⟨ identityʳ y ⟩
+      y ∙ (z ∙ z ⁻¹)  ≈⟨ ∙-cong refl (proj₂ inverse z) ⟩
+      y ∙ ε ≈⟨ proj₂ identity y ⟩
       y ∎
 
 Homomorphic : Set (a ⊔ d)
@@ -73,25 +73,25 @@ module Ker (A : Homomorphism) where
   ε∈Kerφ = cancelˡ (φ 0#) $
     begin⟨ Group.setoid H ⟩
       φ 0# ∙ φ 0# ≈⟨ sym (hom 0# 0#) ⟩
-      φ (0# + 0#) ≈⟨ φ-cong (G-identityʳ 0#) ⟩
-      φ 0#  ≈⟨ sym (identityʳ (φ 0#)) ⟩
+      φ (0# + 0#) ≈⟨ φ-cong (proj₂ G-identity 0#) ⟩
+      φ 0#  ≈⟨ sym (proj₂ identity (φ 0#)) ⟩
       φ 0# ∙ ε ∎
     where open Group-Lemma H using (cancelˡ)
-          open Group G using  () renaming (ε to 0#; _∙_ to _+_; identityʳ to G-identityʳ)
+          open Group G using  () renaming (ε to 0#; _∙_ to _+_; identity to G-identity)
           open Group H
 
   x∈Kerφ⇒x⁻¹∈Kerφ : ⁻¹-Consistent
   x∈Kerφ⇒x⁻¹∈Kerφ  {x} x∈kerφ = cancelˡ (φ x) $
     begin⟨ Group.setoid H ⟩
       φ x ∙ φ (- x) ≈⟨ sym (hom x (- x)) ⟩
-      φ (x + (- x)) ≈⟨ φ-cong (G-inverseʳ x) ⟩
+      φ (x + (- x)) ≈⟨ φ-cong (proj₂ G-inverse x) ⟩
       φ 0# ≈⟨ ε∈Kerφ ⟩
       ε ≈⟨ sym x∈kerφ ⟩
-      φ x ≈⟨ sym (identityʳ (φ x)) ⟩
+      φ x ≈⟨ sym (proj₂ identity (φ x)) ⟩
       φ x ∙ ε ∎
     where open Group-Lemma H using (cancelˡ)
           open Group H
-          open Group G using () renaming (_⁻¹ to -_; _∙_ to _+_; ε to 0#; inverseʳ to G-inverseʳ)
+          open Group G using () renaming (_⁻¹ to -_; _∙_ to _+_; ε to 0#; inverse to G-inverse)
 
   Kernel : Group (a ⊔ d) b
   Kernel = Subgroup Kerφ∙Kerφ⊂Kerφ x∈Kerφ⇒x⁻¹∈Kerφ ε∈Kerφ
@@ -124,16 +124,16 @@ module Im (A : Homomorphism) where
     where open Group-Lemma H using (cancelˡ)
           open Group G using () renaming (_⁻¹ to -_; _∙_ to _+_; ε to 0#)
           open Group H
-          open IsGroup (Group.isGroup G) using () renaming (inverseʳ to G-inverseʳ)
+          open IsGroup (Group.isGroup G) using () renaming (inverse to G-inverse)
           open Ker A using (ε∈Kerφ)
           x = proj₁ s∈imφ
           φx≈s = proj₂ s∈imφ
           p = begin⟨ Group.setoid H ⟩
             s ∙ φ (- x) ≈⟨ ∙-cong (sym φx≈s) refl ⟩
             φ x ∙ φ (- x) ≈⟨ sym (hom x (- x)) ⟩
-            φ (x + (- x)) ≈⟨ φ-cong (G-inverseʳ x) ⟩
+            φ (x + (- x)) ≈⟨ φ-cong (proj₂ G-inverse x) ⟩
             φ 0# ≈⟨ ε∈Kerφ ⟩
-            ε ≈⟨ sym (inverseʳ s) ⟩
+            ε ≈⟨ sym (proj₂ inverse s) ⟩
             s ∙ s ⁻¹ ∎
 
   ε∈Imφ : ε-Consistent
