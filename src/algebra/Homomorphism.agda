@@ -17,7 +17,7 @@ module Group-Lemma {a' b'} (G : Group a'  b') where
 
   cancelˡ : {x y : Carrier} → (z : Carrier) → z ∙ x ≈ z ∙ y → x ≈ y
   cancelˡ {x} {y} z z∙x≈z∙y =
-    begin⟨ setoid ⟩
+    begin⟨ Group.setoid G ⟩
       x ≈⟨ sym (identityˡ x) ⟩
       ε ∙ x ≈⟨ ∙-cong (sym (inverseˡ z)) refl ⟩
       z ⁻¹ ∙ z ∙ x ≈⟨ assoc (z ⁻¹) z x ⟩
